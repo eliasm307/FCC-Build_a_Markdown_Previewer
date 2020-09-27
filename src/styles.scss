@@ -3,7 +3,7 @@
   text-align: center;
 }
 
-$headerHeight: 50px;
+$headerHeight: 10vh;
 
 body {
   /* Native font stack https://getbootstrap.com/docs/4.2/content/reboot/#native-font-stack */
@@ -68,12 +68,14 @@ body {
 
     textarea {
       width: 100%;  
-      height: 100%;
+      height: 90vh; 
+      resize: none;
+      overflow-y: scroll;
     }
     
     #preview {
-      height: 100%;
-      overflow-y: auto;
+      height: 90vh;
+      overflow-y: scroll;
     }
   }
    
