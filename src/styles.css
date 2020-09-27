@@ -1,0 +1,81 @@
+.App {
+  font-family: sans-serif;
+  text-align: center;
+}
+
+$headerHeight: 50px;
+
+body {
+  /* Native font stack https://getbootstrap.com/docs/4.2/content/reboot/#native-font-stack */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+    "Helvetica Neue", Arial, sans-serif;
+  font-size: large;
+  line-height: 1.5;
+  text-align: center;
+  color: #333;
+  margin: 0px;
+  padding: 0px; 
+  border-style: dashed;
+  border-color: red;
+  border-width: 1px; 
+  height: 100vh;
+  width: 100vw;
+  overflow-y: hidden;
+}
+
+/*For development */
+.show-border, 
+#title-row, 
+#text-area-row,
+.container {
+  border-style: dashed;
+  border-color: grey;
+  border-width: 1px; 
+}
+
+.blue,
+#wrapper {
+  border-color: blue;
+}
+
+#wrapper {    
+  height: 100vh;
+  
+  #title-row {  
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    z-index: 100;
+    text-align: center;  
+    height: $headerHeight;
+    
+    h1 {  
+      width: 100%
+    }
+  }
+  
+  #text-area-row {
+    position: relative;
+    height: calc(100vh - $headerHeight);
+    top: $headerHeight; 
+    
+    //min-height: 1px;
+    
+    .textarea-container {   
+      padding: 0px;
+      
+    }
+
+    textarea {
+      width: 100%;  
+      height: 100%;
+    }
+    
+    #preview {
+      height: 100%;
+      overflow-y: auto;
+    }
+  }
+   
+}
+
