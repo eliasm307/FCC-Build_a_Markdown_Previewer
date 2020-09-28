@@ -2,8 +2,8 @@ import React from "react";
 import marked from "marked";
 import DOMPurify from "dompurify";
 import "./styles.scss";
-import SplitPane, { Pane } from "react-split-pane";
-import Split from 'react-split'
+import SplitPane from "react-split-pane"; 
+import Pane from "react-split-pane"; 
 
 // using ES6 modules
 //import Split from 'react-split'
@@ -205,36 +205,83 @@ class Wrapper extends React.Component {
 
   render() {
     console.log(date.toLocaleString(), "Wrapper Pre-Render");
-    try {
+    
       return (
-        <div id="wrapper" className="container-fluid d-flex flex-column grow">
+        <div id="wrapper" className="">
           <div id="title-row" className="row">
             <h1 id="title">Markdown Previewer</h1>
           </div>
 
-          <div id="text-area-row" className="row flex-grow-1">
-            <SplitPane 
-              split="vertical" 
-              minSize={500}
-            >
-              <EditorContainer
-                markdown={this.state.markdown}
-                handleTextChange={this.handleTextChange}
-              />
-              <HTMLPreviewContainer 
-                renderedHTML={this.state.renderedHTML} 
-              />
-              <PreviewContainer 
-                renderedHTML={this.state.renderedHTML} 
-              />
-            </SplitPane>
+          <div 
+            id="text-area-row" 
+            className="row-md container-fluid d-flex flex-column grow"
+          >
+            
+              <SplitPane  
+                split="vertical" 
+                minSize={50} 
+              >
+                <Pane  
+                  minSize="10%"
+                >
+                  <EditorContainer
+                    markdown={this.state.markdown}
+                    handleTextChange={this.handleTextChange}
+                  />
+                </Pane >
+
+                <Pane  
+                  minSize="10%"
+                >
+                  <HTMLPreviewContainer 
+                    renderedHTML={this.state.renderedHTML} 
+                  />
+                </Pane >
+
+                <Pane  
+                  minSize="10%"
+                >
+                  <PreviewContainer 
+                    renderedHTML={this.state.renderedHTML} 
+                  />
+                </Pane >
+  
+              </SplitPane> 
           </div>
         </div>
       );
-    } catch (err) {
-      console.log(date.toLocaleString(), "Wrapper Pre-Render error");
-      console.log(err);
-    }
+/*
+      return (
+        <div id="text-area-row" className="container-fluid">
+            <div className="row">
+              <div className="col">
+
+        <Split 
+        sizes={[25, 75]}
+        minSize={100}
+        expandToMin={true}
+        gutterSize={10}
+        gutterAlign="center"
+        snapOffset={30}
+        dragInterval={1}
+        direction="vertical"
+        cursor="col-resize" 
+        >
+          <EditorContainer
+                    markdown={this.state.markdown}
+                    handleTextChange={this.handleTextChange}
+                  />
+
+<PreviewContainer 
+                    renderedHTML={this.state.renderedHTML} 
+                  />
+        </Split>
+
+        </div>
+        </div>
+        </div>
+      );*/
+    
   }
 }
 //import Split from 'react-split';
@@ -275,22 +322,41 @@ class Wrapper extends React.Component {
 
 const EditorContainer = (props) => {
   console.log(date.toLocaleString(), "EditorContainer Pre-Render");
-  return (
-    <div className="textarea-container col">
+  return ( 
+    <div className="textarea-container">
       <textarea
         id="editor"
         onChange={props.handleTextChange}
         value={props.markdown}
       ></textarea>
-    </div>
+    </div> 
   );
 };
 
 const HTMLPreviewContainer = (props) => {
   console.log(date.toLocaleString(), "HTMLPreviewContainer Pre-Render");
+
+  let text = props.renderedHTML;
+
+  if(typeof(text)==="string") 
+  {
+    //text = text.replace("<", "&lt;");
+    //text = text.replace(">", "&gt;");
+    console.log("rendered HTML text as text: ", text.split(/\r?\n/));
+  }
+  else
+  {
+    console.log("Type of rendered HTML text prop is not text, it is ", typeof(text));
+  }
+
+  //<textarea id="HTMLpreview" value={props.renderedHTML} readOnly></textarea>
+
+  //let s = text.split(/\r?\n/).map(e =>  {e} + </br>);
   return (
-    <div className="textarea-container col">
-      <textarea id="HTMLpreview" value={props.renderedHTML} readOnly></textarea>
+    <div className="textarea-container"> 
+      <p id="HTMLpreview">
+        {text.split(/\r?\n/).map(e =>  <p>{e}</p>)}
+      </p>
     </div>
   );
 };
@@ -298,7 +364,7 @@ const HTMLPreviewContainer = (props) => {
 const PreviewContainer = (props) => {
   console.log(date.toLocaleString(), "PreviewContainer Pre-Render");
   return (
-    <div id="preview" className="textarea-container col">
+    <div id="preview" className="textarea-container">
       <div dangerouslySetInnerHTML={{ __html: props.renderedHTML }} />
     </div>
   );
