@@ -1,5 +1,9 @@
 $headerHeight: 50px;
 
+html {
+  scroll-behavior: smooth;
+}
+
 :root { 
    
   /* Native font stack https://getbootstrap.com/docs/4.2/content/reboot/#native-font-stack */
@@ -15,7 +19,7 @@ $headerHeight: 50px;
   
   border-style: dashed;
   border-color: red;
-  border-width: 5px; 
+  border-width: 0px; 
   min-height: 500px;
   min-width: 400px;
   /*overflow-y: hidden;*/ 
@@ -31,7 +35,7 @@ $headerHeight: 50px;
 .container {
   border-style: dashed;
   border-color: grey;
-  border-width: 3px; 
+  border-width: 0px; 
 }
 
 .blue,
@@ -50,24 +54,27 @@ $headerHeight: 50px;
     height: 10%;
     width: 100%; 
     margin: 0;
+    padding: 0px;
+    box-shadow: 0px 1px 10px grey;
     
     h1 {   
       width: 100%;
+      font-size: 1.5em;
     }
   }
   
   #text-area-row {
     position:  absolute;
     //height: calc(60vh - $headerHeight);
-    height: 90%;
-    top: 10%; 
+    height: 89%;
+    top: 11%; 
     width: 100%;
     padding: 0;
     
     //min-height: 1px;
     
     .textarea-container {   
-      padding: 0px;  
+      padding: 10px;  
       margin: 0px;
       -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
       -moz-box-sizing: border-box;    /* Firefox, other Gecko */
@@ -78,10 +85,47 @@ $headerHeight: 50px;
       
     }
  
-    /*#preview { 
+    #preview { 
       //overflow: auto;
       //overflow-y: auto;
-    }*/
+
+      pre {
+        width: 100%;
+        overflow: auto;
+        white-space: pre-wrap;
+        word-wrap: break-word; 
+      }
+
+      blockquote{ 
+        font-style: italic;
+        margin-left: 10px;
+
+        p::before,
+        p::after {
+          content: '"'; 
+          font-size: 2em;
+          padding-left: 0px;
+          font-weight: 500; 
+          
+        }
+      }
+
+      
+ 
+
+      code {
+        width: 100%;
+        display: block;
+        border-width: 1px;
+        border-style: solid;
+        background-color: rgba(200,200,200,0.25);
+        border-radius: 5px;
+        padding: 10px;
+        margin-top: 5px;
+        margin-bottom: 5px;
+
+      }
+    }
   }
  
   textarea { 

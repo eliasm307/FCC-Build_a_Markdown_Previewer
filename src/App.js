@@ -2,16 +2,31 @@ import React from "react";
 import marked from "marked";
 import DOMPurify from "dompurify";
 import "./styles.scss";
-import SplitPane from "react-split-pane"; 
-import Pane from "react-split-pane"; 
+import SplitPane from "react-split-pane";
+import Pane from "react-split-pane";
+
+/*
+TODO
+-Add html formatting for rendered HTML pane
+-   Code as boxes formatted as bootstrap wells
+-   Table formatting
+
+
+- Add toolbars to each of the panes with options for
+-   full screen
+-   Show title
+
+- Add colour
+- Center title vertically
+- Remove border when clicking textarea
+
+*/
 
 // using ES6 modules
 //import Split from 'react-split'
 
 // using CommonJS modules
 //var Split = require("react-split");
-
-///////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
 //MARKED SETUP
@@ -43,10 +58,8 @@ const renderer = {
       "text: ",
       text
     );
-    return (
-      `
-<a target="_blank" href="${href}">${text} + "</a>"`
-    );
+    return `
+<a target="_blank" href="${href}">${text} + "</a>"`;
   } /*,
   br() { 
     console.log("rendering markdown for br");
@@ -114,7 +127,7 @@ And here. | Okay. | I think we get it.
 1. Use just 1s if you want! 
 1. And last but not least, let's not forget embedded images:
 
-![React Logo w/ Text](https://goo.gl/Umyytc)
+![React Logo w/ Text](https://techchronos.com/wp-content/uploads/SszarkLabs/stack-icon/cywBkaGwkMeDAuJbSt1k.png)
 `;
 //////////////////////////////////////////////////////////////////////////////
 //FUNCTIONS
@@ -205,131 +218,49 @@ class Wrapper extends React.Component {
 
   render() {
     console.log(date.toLocaleString(), "Wrapper Pre-Render");
-    
-      return (
-        <div id="wrapper" className="">
-          <div id="title-row" className="row">
-            <h1 id="title">Markdown Previewer</h1>
-          </div>
 
-          <div 
-            id="text-area-row" 
-            className="row-md container-fluid d-flex flex-column grow"
-          >
-            
-              <SplitPane  
-                split="vertical" 
-                minSize={50} 
-              >
-                <Pane  
-                  minSize="10%"
-                >
-                  <EditorContainer
-                    markdown={this.state.markdown}
-                    handleTextChange={this.handleTextChange}
-                  />
-                </Pane >
-
-                <Pane  
-                  minSize="10%"
-                >
-                  <HTMLPreviewContainer 
-                    renderedHTML={this.state.renderedHTML} 
-                  />
-                </Pane >
-
-                <Pane  
-                  minSize="10%"
-                >
-                  <PreviewContainer 
-                    renderedHTML={this.state.renderedHTML} 
-                  />
-                </Pane >
-  
-              </SplitPane> 
-          </div>
+    return (
+      <div id="wrapper" className="">
+        <div id="title-row" className="row">
+          <h1 id="title">Markdown Previewer</h1>
         </div>
-      );
-/*
-      return (
-        <div id="text-area-row" className="container-fluid">
-            <div className="row">
-              <div className="col">
 
-        <Split 
-        sizes={[25, 75]}
-        minSize={100}
-        expandToMin={true}
-        gutterSize={10}
-        gutterAlign="center"
-        snapOffset={30}
-        dragInterval={1}
-        direction="vertical"
-        cursor="col-resize" 
+        <div
+          id="text-area-row"
+          className="row-md container-fluid d-flex flex-column grow"
         >
-          <EditorContainer
-                    markdown={this.state.markdown}
-                    handleTextChange={this.handleTextChange}
-                  />
+          <SplitPane split="vertical" minSize={50}>
+            <Pane minSize="15%">
+              <EditorContainer
+                markdown={this.state.markdown}
+                handleTextChange={this.handleTextChange}
+              />
+            </Pane>
 
-<PreviewContainer 
-                    renderedHTML={this.state.renderedHTML} 
-                  />
-        </Split>
+            <Pane minSize="15%">
+              <HTMLPreviewContainer renderedHTML={this.state.renderedHTML} />
+            </Pane>
 
+            <Pane minSize="20%">
+              <PreviewContainer renderedHTML={this.state.renderedHTML} />
+            </Pane>
+          </SplitPane>
         </div>
-        </div>
-        </div>
-      );*/
-    
+      </div>
+    );
   }
 }
-//import Split from 'react-split';
-/*const SplitComponent1 = (props) => {
-  console.log(date.toLocaleString(), "SplitComponent Pre-Render");
-  console.log(date.toLocaleString(), "Split: ", Split);
- 
-  return (
-    <Split>
-      <div></div>
-      <div></div>
-    </Split>
-  ); 
-};*/
-
-/*const SplitComponent2 = (props) => {
-  console.log(date.toLocaleString(), "SplitComponent2 Pre-Render");
-  //console.log(date.toLocaleString(), "Split2: ", SplitPane);
-
-  return (
-    <SplitPane 
-      split="vertical" 
-      minSize={500}
-    >
-      <div>or you can use a plain old div</div>
-      <div>or you can use a plain old div</div>
-    </SplitPane>
-  );
-};
-*/
-/*<SplitPane split="vertical" minSize={50} defaultSize={100}>
-      <div>22</div>
-      <div>22</div>
-    </SplitPane>
-    */
-
-//export default SplitComponent;
 
 const EditorContainer = (props) => {
   console.log(date.toLocaleString(), "EditorContainer Pre-Render");
-  return ( 
+  return (
     <div className="textarea-container">
       <textarea
         id="editor"
         onChange={props.handleTextChange}
         value={props.markdown}
       ></textarea>
-    </div> 
+    </div>
   );
 };
 
@@ -338,24 +269,26 @@ const HTMLPreviewContainer = (props) => {
 
   let text = props.renderedHTML;
 
-  if(typeof(text)==="string") 
-  {
+  if (typeof text === "string") {
     //text = text.replace("<", "&lt;");
     //text = text.replace(">", "&gt;");
     console.log("rendered HTML text as text: ", text.split(/\r?\n/));
-  }
-  else
-  {
-    console.log("Type of rendered HTML text prop is not text, it is ", typeof(text));
+  } else {
+    console.log(
+      "Type of rendered HTML text prop is not text, it is ",
+      typeof text
+    );
   }
 
   //<textarea id="HTMLpreview" value={props.renderedHTML} readOnly></textarea>
 
   //let s = text.split(/\r?\n/).map(e =>  {e} + </br>);
   return (
-    <div className="textarea-container"> 
+    <div className="textarea-container">
       <p id="HTMLpreview">
-        {text.split(/\r?\n/).map(e =>  <p>{e}</p>)}
+        {text.split(/\r?\n/).map((e) => (
+          <p>{e}</p>
+        ))}
       </p>
     </div>
   );
