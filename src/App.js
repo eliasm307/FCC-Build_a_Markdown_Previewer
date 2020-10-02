@@ -59,8 +59,14 @@ const renderer = {
       text
     );
     return `
-<a target="_blank" href="${href}">${text} + "</a>"`;
-  } /*,
+<a target="_blank" tooltip="${href}" href="${href}">${text}</a>`;
+  },
+  image(href, title, text) {
+    return `<img class="img-fluid" alt="${text}" src="${href}"/>`
+  } 
+
+ 
+  /*,
   br() { 
     console.log("rendering markdown for br");
     return `
