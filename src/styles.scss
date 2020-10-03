@@ -16,15 +16,16 @@ html {
   margin: 0px;
   padding: 0px;  
   text-align: center;
-  
-  border-style: dashed;
-  border-color: red;
-  border-width: 0px; 
   min-height: 500px;
   min-width: 400px;
   /*overflow-y: hidden;*/ 
   overflow: auto;
- 
+  
+  //for development
+  border-style: dashed;
+  //border-color: red;
+  border-width: 0px; 
+
 }
 
 /*For development */
@@ -37,11 +38,7 @@ html {
   border-color: grey;
   border-width: 0px; 
 }
-
-.blue,
-#wrapper {
-  border-color: yellow !important;
-}
+ 
 
 #wrapper {     
   
@@ -63,11 +60,12 @@ html {
     h1 {   
       width: 100%;
       height: $header-height - 1.75em;
-      font-size: $header-height - 0.5em;
+      font-size: $header-height - 0.25em;
       margin-bottom: 0;
       padding-bottom: 0;
+      font-weight: 600;
 
-      border-color: red;
+      //border-color: red;
       border-width: 0px;
     }
 
@@ -106,8 +104,9 @@ html {
       width: 100%; 
  
       overflow-wrap: break-word;  //break words to ensure max width is not exceeded
-       
-      border-color: red;
+      
+      //for development
+      //border-color: red;
       border-width: 0px;
     }
  
@@ -124,7 +123,7 @@ html {
 
       h2 {
         font-size: $header-height - 1em;
-        font-weight: 400;
+        font-weight: 500;
         width: 100%;
         
       }
@@ -205,6 +204,7 @@ html {
       code {
         width: 100%;
         display: block;
+        color: black;
         border-width: 1px;
         border-style: solid;
         background-color: rgba(200,200,200,0.25);
@@ -212,9 +212,12 @@ html {
         padding: 10px;
         margin-top: 5px;
         margin-bottom: 5px;
+        font-family: 'Courier New';
 
       }
 
+
+      //Table formatting
       table {
         border-collapse: collapse;
         //overflow-x: scroll;
@@ -222,17 +225,38 @@ html {
         margin: 20px 0px;
         
         //make sure table doesnt go beyond pane width limit
-        //display: block;
-        overflow-x: auto;
+        display: table;
+        overflow-x: scroll;
 
         table-layout: auto;
         width: 100%;
         //white-space: nowrap;
       }
+
+      .table-wrapper {
+        display: block;
+        overflow-x: auto;
+        width: 100%;
+      }
+
+      //Table row formatting
+      tr { 
+        width: 100%;
+      }
+
+      tr:nth-child(even) {
+        background-color: rgba(200,200,200,0.15);
+      }
+
+      tr:hover {
+        background-color: rgba(200,200,200,0.5);
+      }
        
+      //Table elements formatting
       th, td {
         padding: 10px;
         border: 0.5px solid grey;
+        
       }
 
       th {
@@ -244,29 +268,20 @@ html {
       td {
         vertical-align: top;  
       } 
-
-      tr {
-        width: 100%;
-      }
-
-      tr:nth-child(even) {
-        background-color: rgba(200,200,200,0.15);
-      }
-
-      tr:hover {
-        background-color: rgba(200,200,200,0.5);
-      }
-
+ 
+      //List item formatting
       li {
         margin: 5px 0px;
       }
 
+      //Link formatting
       a {
         position:relative; /* making the .tooltip span a container for the tooltip text */
         word-break: break-all;
         max-width: 100%;
       }
 
+      //Link tooltip
       a:before {
         content: attr(href); /* here's the magic */
         position:absolute;
@@ -275,27 +290,32 @@ html {
         bottom:100%;
         transform:translateY(-50%);
          
-        /* move to right */
+        /* move to center horizontally */
         left:100%;
         transform:translateX(-50%);
+
         //margin-bottom:15px; /* and add a small left margin */
         
         //Hide text overflow and show ellipses
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        //white-space: nowrap;
+        //overflow: hidden;
+        //text-overflow: ellipsis;
 
         /* basic styles */
-        max-width:250px; 
+        width:200px;  
         padding:10px;
         border-radius:5px;
         background:black;
         color: white;
         text-align:center;
       
+        //allow links to be wrapped at any point
+        word-wrap: break-word;
+
         display:none; /* hide by default */
       }
 
+      //display link tooltip on hover
       a:hover:before {
         display:block;
       } 

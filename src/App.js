@@ -123,7 +123,24 @@ const renderer = {
   },
   image(href, title, text) {
     return `<img class="img-fluid" alt="${text}" src="${href}"/>`
-  } 
+  },
+  table(header, body) {
+    console.log("Table header: ", header, "Table Body: ", body);
+
+    return `
+      <div class="table-wrapper">
+        <table>
+            <thead> 
+              ${header}
+            </thead>
+  
+            <tbody>
+              ${body} 
+            </tbody>
+
+        </table>
+      </div>`;
+  }
  
   /*,
   br() { 
@@ -147,7 +164,7 @@ marked.setOptions({
 //FUNCTIONS
 
 let RenderMarkdown = (sMarkdown) => {
-  console.log("RenderMarkdown RAW: ", sMarkdown);
+  //console.log("RenderMarkdown RAW: ", sMarkdown);
 
   //sMarkdown = sMarkdown.replace(/\n/g, `<br>\n`);
   //sMarkdown = sMarkdown.replace(/\r\n|\r|\n/g, '<br>');
@@ -306,7 +323,7 @@ const HTMLPreviewContainer = (props) => {
   if (typeof text === "string") {
     //text = text.replace("<", "&lt;");
     //text = text.replace(">", "&gt;");
-    console.log("rendered HTML text as text: ", text.split(/\r?\n/));
+    //console.log("rendered HTML text as text: ", text.split(/\r?\n/));
   } else {
     console.log(
       "Type of rendered HTML text prop is not text, it is ",
@@ -314,15 +331,17 @@ const HTMLPreviewContainer = (props) => {
     );
   }
  
-  //let s = text.split(/\r?\n/).map(e =>  {e} + </br>);
+  //convert renderedHTML to plain text inside HTML tags
+  let s = text.split(/\r?\n/).map((e, i) => (
+            <p key={i}>{e}</p>
+          ));
+
   return (
     <div className="textarea-container"> 
       <PaneTitle title={paneTitleHTML} />
-      <p id="html-preview">
-        {text.split(/\r?\n/).map((e) => (
-          <p>{e}</p>
-        ))}
-      </p>
+      <div id="html-preview">
+        {s}
+      </div>
     </div>
   );
 };
