@@ -2,93 +2,33 @@ import React from "react";
 import marked from "marked";
 import DOMPurify from "dompurify";
 import "./styles.scss";
+import "./split-pane.css";
 import SplitPane from "react-split-pane";
 import Pane from "react-split-pane";
+//import Resizer from "react-split-pane";
 
 /*
 TODO
--Add html formatting for rendered HTML pane
--   Code as boxes formatted as bootstrap wells
--   Table formatting
-
+-Add html formatting for rendered HTML pane 
+-Add option for light or dark theme
 
 - Add toolbars to each of the panes with options for
 -   full screen
 -   Show title
 
 - Add colour
-- Center title vertically
-- Remove border when clicking textarea
-
+- Center title vertically 
+- Customise resizer bars, maybe use this to show title
 */
-
-// using ES6 modules
-//import Split from 'react-split'
-
-// using CommonJS modules
-//var Split = require("react-split");
-
-///////////////////////////////////////////////////////////////////////////////
-//MARKED SETUP
-
-// ALLOWS LINE BREAKS WITH RETURN BUTTON
-marked.setOptions({
-  breaks: true
-});
-/*
-// INSERTS target="_blank" INTO HREF TAGS (required for codepen links)
-const renderer = new marked.Renderer();
-renderer.link = function (href, title, text) {
-  return `<a target="_blank" href="${href}">${text}` + '</a>';
-}
-
-// Override function
-renderer.br = function () { 
-    return `<br/>`;
-};*/
-
-// Override function
-const renderer = {
-  link(href, title, text) {
-    console.log(
-      "rendering markdown for link, href: ",
-      href,
-      "title: ",
-      title,
-      "text: ",
-      text
-    );
-    return `
-<a target="_blank" tooltip="${href}" href="${href}">${text}</a>`;
-  },
-  image(href, title, text) {
-    return `<img class="img-fluid" alt="${text}" src="${href}"/>`
-  } 
-
  
-  /*,
-  br() { 
-    console.log("rendering markdown for br");
-    return `
-<br/>`;
-  }*/
-
-  /*,
-  text(text) {
-    console.log("rendering markdown for text: ''", text, "''");
-    return `
-<p>${text}<p>`;
-  }*/
-};
-
-marked.use({ renderer });
-
 //////////////////////////////////////////////////////////////////////////////
-//VARIABLES
-let date = new Date();
+//VARIABLES and CONSTANTS
+const date = new Date(); 
 
-//////////////////////////////////////////////////////////////////////////////
-//CONSTANTS
+const paneTitleHTML = "HTML";
+const paneTitleMarkup = "Markup";
+const paneTitleRenderedHTML = "Result";
+
 const sSEPARATOR = "--------------------------------";
 
 const placeholder = `# Welcome to my React Markdown Previewer!
@@ -135,6 +75,74 @@ And here. | Okay. | I think we get it.
 
 ![React Logo w/ Text](https://techchronos.com/wp-content/uploads/SszarkLabs/stack-icon/cywBkaGwkMeDAuJbSt1k.png)
 `;
+
+const placeholder2 = `1. List item one.
++
+List item one continued with a second paragraph followed by an
+Indented block.
++
+.................
+$ ls *.sh
+$ mv *.sh ~/tmp
+.................
++
+List item continued with a third paragraph.
+
+2. List item two continued with an open block.
++
+--
+This paragraph is part of the preceding list item.
+
+a. This list is nested and does not require explicit item
+continuation.
++
+This paragraph is part of the preceding list item.
+
+b. List item b.
+
+This paragraph belongs to item two of the outer list.
+--`;
+
+
+///////////////////////////////////////////////////////////////////////////////
+//MARKED SETUP
+ 
+// Override renderer functions
+const renderer = {
+  link(href, title, text) {
+    console.log(
+      "rendering markdown for link, href: ",
+      href,
+      "title: ",
+      title,
+      "text: ",
+      text
+    );
+    return `
+<a target="_blank" tooltip="${href}" href="${href}">${text}</a>`;
+  },
+  image(href, title, text) {
+    return `<img class="img-fluid" alt="${text}" src="${href}"/>`
+  } 
+ 
+  /*,
+  br() { 
+    console.log("rendering markdown for br");
+    return `
+<br/>`;
+  }*/
+
+};
+
+marked.use({ renderer });
+
+// ALLOWS LINE BREAKS WITH RETURN BUTTON
+marked.setOptions({
+  gfm: true,
+  breaks: true
+    
+});
+
 //////////////////////////////////////////////////////////////////////////////
 //FUNCTIONS
 
@@ -183,17 +191,11 @@ class Wrapper extends React.Component {
 
     console.log("Wrapper Text change method binding");
     this.handleTextChange = this.handleTextChange.bind(this);
-
-    //initial render with placeholder
-    /*this.handleTextChange({
-      target: {
-        value: placeholder
-      }
-    });*/
+ 
   }
 
   handleSizeButtonClick(event) {
-    console.log(date.toLocaleString(), "TBC");
+    //console.log(date.toLocaleString(), "TBC");
   }
 
   handleTextChange(event) {
@@ -201,15 +203,15 @@ class Wrapper extends React.Component {
     let sMarkdown = event.target.value;
     let srenderedHTML = RenderMarkdown(sMarkdown);
 
-    console.log(sSEPARATOR);
-    console.log(date.toLocaleString(), "Markdown input (sanitised)");
+    //console.log(sSEPARATOR);
+    //console.log(date.toLocaleString(), "Markdown input (sanitised)");
     //console.log( sMarkdown);
 
-    console.log(sSEPARATOR);
-    console.log(date.toLocaleString(), "Markdown rendered output");
+    //console.log(sSEPARATOR);
+    //console.log(date.toLocaleString(), "Markdown rendered output");
     //console.log( srenderedHTML);
 
-    console.log(sSEPARATOR);
+    //console.log(sSEPARATOR);
 
     this.setState({
       markdown: sMarkdown,
@@ -225,31 +227,48 @@ class Wrapper extends React.Component {
   render() {
     console.log(date.toLocaleString(), "Wrapper Pre-Render");
 
+    /*const styleC = { 
+      background: '#F00',
+      color: '#F00' 
+    };*/
+
     return (
       <div id="wrapper" className="">
         <div id="title-row" className="row">
           <h1 id="title">Markdown Previewer</h1>
+          <hr/>
         </div>
 
         <div
           id="text-area-row"
-          className="row-md container-fluid d-flex flex-column grow"
+          className="row-md"
         >
-          <SplitPane split="vertical" minSize={50}>
-            <Pane minSize="15%">
+          <SplitPane 
+            split="vertical" 
+            minSize={50} 
+            //className="Resizerx"
+            resizerClassName="Resizer"
+          >
+            <Pane minSize="15%"> 
               <EditorContainer
                 markdown={this.state.markdown}
                 handleTextChange={this.handleTextChange}
-              />
+                
+              /> 
             </Pane>
 
-            <Pane minSize="15%">
-              <HTMLPreviewContainer renderedHTML={this.state.renderedHTML} />
+            <Pane minSize="15%"> 
+              <HTMLPreviewContainer 
+                renderedHTML={this.state.renderedHTML} 
+              /> 
             </Pane>
 
-            <Pane minSize="20%">
-              <PreviewContainer renderedHTML={this.state.renderedHTML} />
+            <Pane minSize="20%"> 
+              <PreviewContainer 
+                renderedHTML={this.state.renderedHTML} 
+              /> 
             </Pane>
+            
           </SplitPane>
         </div>
       </div>
@@ -257,19 +276,28 @@ class Wrapper extends React.Component {
   }
 }
 
+const PaneTitle = (props) => { 
+  return (
+    <div className="pane-title">
+      <h2>{props.title}</h2>
+    </div>
+  ); 
+}
+
 const EditorContainer = (props) => {
   console.log(date.toLocaleString(), "EditorContainer Pre-Render");
   return (
     <div className="textarea-container">
+      <PaneTitle title={paneTitleMarkup} />
       <textarea
         id="editor"
         onChange={props.handleTextChange}
         value={props.markdown}
-      ></textarea>
+      />
     </div>
   );
 };
-
+ 
 const HTMLPreviewContainer = (props) => {
   console.log(date.toLocaleString(), "HTMLPreviewContainer Pre-Render");
 
@@ -285,12 +313,11 @@ const HTMLPreviewContainer = (props) => {
       typeof text
     );
   }
-
-  //<textarea id="HTMLpreview" value={props.renderedHTML} readOnly></textarea>
-
+ 
   //let s = text.split(/\r?\n/).map(e =>  {e} + </br>);
   return (
-    <div className="textarea-container">
+    <div className="textarea-container"> 
+      <PaneTitle title={paneTitleHTML} />
       <p id="html-preview">
         {text.split(/\r?\n/).map((e) => (
           <p>{e}</p>
@@ -303,8 +330,9 @@ const HTMLPreviewContainer = (props) => {
 const PreviewContainer = (props) => {
   console.log(date.toLocaleString(), "PreviewContainer Pre-Render");
   return (
-    <div id="preview" className="textarea-container">
-      <div dangerouslySetInnerHTML={{ __html: props.renderedHTML }} />
+    <div  className="textarea-container"> 
+      <PaneTitle title={paneTitleRenderedHTML} />
+      <div id="preview" dangerouslySetInnerHTML={{ __html: props.renderedHTML }} />
     </div>
   );
 };

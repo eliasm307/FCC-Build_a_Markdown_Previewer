@@ -1,4 +1,4 @@
-$headerHeight: 50px;
+$header-height: 2em;
 
 html {
   scroll-behavior: smooth;
@@ -52,34 +52,51 @@ html {
     z-index: 100;
     text-align: center;  
     //height: 10%;
-    height: 2em;
+    height: $header-height * 2;
     width: 100%; 
     margin: 0;
     padding: 0px;
     box-shadow: 0px 1px 10px grey;
+
+    
     
     h1 {   
       width: 100%;
-      font-size: 1.5em;
+      height: $header-height - 1.75em;
+      font-size: $header-height - 0.5em;
+      margin-bottom: 0;
+      padding-bottom: 0;
+
+      border-color: red;
+      border-width: 0px;
     }
+
+    hr {  
+      border-color: rgba(200,200,200,1);
+      border-width: 1px; 
+      width: 100%;
+      margin: 0px 15px;      
+    }
+    
   }
   
   #text-area-row {
     position:  absolute;
     //height: calc(60vh - $headerHeight);
     //height: 100%;
-    top: 2em;     //spacing with top edge to account for header
+    top: $header-height * 2;     //spacing with top edge to account for header
     bottom: 0px;  //no spacing with bottom edge
     //margin-bottom: -2em;
     width: 100%;
     padding: 0;
-    
+ 
     //min-height: 1px;
     
     .textarea-container {   
       //padding: 0px 15px;  
       display: relative; 
-      padding-top: 5px;
+      margin-top: 5px;
+      bottom: 0px;
       margin: 0px; 
       -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
       -moz-box-sizing: border-box;    /* Firefox, other Gecko */
@@ -87,15 +104,38 @@ html {
       height: 100%;
       overflow-y: auto; 
       width: 100%; 
-
+ 
       overflow-wrap: break-word;  //break words to ensure max width is not exceeded
-      
+       
+      border-color: red;
+      border-width: 0px;
     }
+ 
 
+    .pane-title {
+      position: absolute;
+      top: 0em - $header-height + 0.5em;
+      padding-left: 15px;
+      text-align: center;
+      //width: 100%;
+      //-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+      //-moz-box-sizing: border-box;    /* Firefox, other Gecko */
+      //box-sizing: border-box; 
+
+      h2 {
+        font-size: $header-height - 1em;
+        font-weight: 400;
+        width: 100%;
+        
+      }
+      
+    } 
+   
     textarea { 
       display: absolute;
       top: 0;
       right: 0;
+      bottom: 0;
 
       margin-bottom: -10px;
       padding: 15px;
@@ -138,7 +178,7 @@ html {
     #preview { 
       //overflow: auto;
       //overflow-y: auto; 
-
+ 
       padding: 15px;
 
       pre {
@@ -182,9 +222,12 @@ html {
         margin: 20px 0px;
         
         //make sure table doesnt go beyond pane width limit
-        display: block;
+        //display: block;
         overflow-x: auto;
-    //white-space: nowrap;
+
+        table-layout: auto;
+        width: 100%;
+        //white-space: nowrap;
       }
        
       th, td {
@@ -199,8 +242,12 @@ html {
       }
 
       td {
-        vertical-align: top;
+        vertical-align: top;  
       } 
+
+      tr {
+        width: 100%;
+      }
 
       tr:nth-child(even) {
         background-color: rgba(200,200,200,0.15);
@@ -253,52 +300,14 @@ html {
         display:block;
       } 
 
-    }
+    } 
+    
   }
  
-  
+
    
 }
- 
-.Resizer {
-  background: #090 !important;
-  opacity: 0.5 !important;
-  z-index: 1; 
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  -moz-background-clip: padding;
-  -webkit-background-clip: padding;
-  background-clip: padding-box;
-}
 
-/*.Resizer:hover {
-  -webkit-transition: all 0.1s ease;
-  transition: all 0.1s ease;
-}*/
 
-.Resizer.horizontal {
-  height: 50px;
-  margin: -50px 0 !important;
-  border-top: 5px solid rgba(50, 50, 255, 0) !important;
-  border-bottom: 50px solid rgba(50, 50, 255, 0) !important;
-  cursor: row-resize;
-  width: 100%;
-}
 
-.Resizer:hover {
-  -webkit-transition: all 0.1s ease !important;
-  transition: all 0.1s ease !important;
-}
 
-.Resizer.horizontal:hover {
-  border-top: 50px solid rgba(0, 50, 0, 0.5)  !important;
-  border-bottom: 5px solid rgba(0, 50, 0, 0.5) !important;
-}
-
-.Resizer.disabled {
-  cursor: not-allowed;
-}
-.Resizer.disabled:hover {
-  border-color: red !important;
-}
