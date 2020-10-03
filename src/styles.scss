@@ -51,7 +51,8 @@ html {
     left: 0px;
     z-index: 100;
     text-align: center;  
-    height: 10%;
+    //height: 10%;
+    height: 2em;
     width: 100%; 
     margin: 0;
     padding: 0px;
@@ -66,28 +67,79 @@ html {
   #text-area-row {
     position:  absolute;
     //height: calc(60vh - $headerHeight);
-    height: 89%;
-    top: 11%; 
+    //height: 100%;
+    top: 2em;     //spacing with top edge to account for header
+    bottom: 0px;  //no spacing with bottom edge
+    //margin-bottom: -2em;
     width: 100%;
     padding: 0;
     
     //min-height: 1px;
     
     .textarea-container {   
-      padding: 10px;  
-      margin: 0px;
+      //padding: 0px 15px;  
+      display: relative; 
+      padding-top: 5px;
+      margin: 0px; 
       -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
       -moz-box-sizing: border-box;    /* Firefox, other Gecko */
       box-sizing: border-box; 
       height: 100%;
       overflow-y: auto; 
       width: 100%; 
+
+      overflow-wrap: break-word;  //break words to ensure max width is not exceeded
       
+    }
+
+    textarea { 
+      display: absolute;
+      top: 0;
+      right: 0;
+
+      margin-bottom: -10px;
+      padding: 15px;
+      overflow: auto; 
+
+      
+      //-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+      //-moz-box-sizing: border-box;    /* Firefox, other Gecko */
+      //box-sizing: border-box; 
+
+
+      //no resize handle
+      resize: none; 
+      -webkit-resize: none;
+      
+      width: 100%;
+      height:100%;
+
+      //no border
+      border-width: 0;
+      border-color: transparent;
+      border: none;
+
+      //no box shadow
+      -webkit-box-shadow: none;
+      -moz-box-shadow: none;
+      box-shadow: none;
+      
+    }
+
+    textarea:focus {
+      border: none; 
+      outline: none;
+    }
+
+    #html-preview {
+      padding: 15px;
     }
  
     #preview { 
       //overflow: auto;
-      //overflow-y: auto;
+      //overflow-y: auto; 
+
+      padding: 15px;
 
       pre {
         width: 100%;
@@ -125,9 +177,14 @@ html {
 
       table {
         border-collapse: collapse;
-        overflow-x: auto;
+        //overflow-x: scroll;
         border: 2px solid black;
         margin: 20px 0px;
+        
+        //make sure table doesnt go beyond pane width limit
+        display: block;
+        overflow-x: auto;
+    //white-space: nowrap;
       }
        
       th, td {
@@ -150,7 +207,7 @@ html {
       }
 
       tr:hover {
-          background-color: rgba(200,200,200,0.5);
+        background-color: rgba(200,200,200,0.5);
       }
 
       li {
@@ -159,7 +216,8 @@ html {
 
       a {
         position:relative; /* making the .tooltip span a container for the tooltip text */
-  
+        word-break: break-all;
+        max-width: 100%;
       }
 
       a:before {
@@ -169,8 +227,7 @@ html {
         /* vertically center */
         bottom:100%;
         transform:translateY(-50%);
-        
-        
+         
         /* move to right */
         left:100%;
         transform:translateX(-50%);
@@ -194,32 +251,15 @@ html {
 
       a:hover:before {
         display:block;
-      }
-
+      } 
 
     }
   }
  
-  textarea { 
-    margin: 0px;
-    padding: 0px;
-    overflow: auto; 
-    resize: none; 
-    -webkit-resize: none;
-    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
-    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
-    box-sizing: border-box; 
-    width: 100%;
-    height:98%;
-    border-width: 0;
-    border-color: transparent;
-    
-  }
+  
    
 }
-
-
-
+ 
 .Resizer {
   background: #090 !important;
   opacity: 0.5 !important;

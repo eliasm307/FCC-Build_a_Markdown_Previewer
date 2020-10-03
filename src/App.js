@@ -291,7 +291,7 @@ const HTMLPreviewContainer = (props) => {
   //let s = text.split(/\r?\n/).map(e =>  {e} + </br>);
   return (
     <div className="textarea-container">
-      <p id="HTMLpreview">
+      <p id="html-preview">
         {text.split(/\r?\n/).map((e) => (
           <p>{e}</p>
         ))}
