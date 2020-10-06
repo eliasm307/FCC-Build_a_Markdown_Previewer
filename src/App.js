@@ -8,6 +8,11 @@ import Pane from "react-split-pane";
 //import Resizer from "react-split-pane";
 
 /*
+Project based on FCC Front End Libraries Projects - Build a Markdown Previewer challenge: https://www.freecodecamp.org/learn/front-end-libraries/front-end-libraries-projects/build-a-markdown-previewer
+*/
+
+
+/*
 TODO
 -Add html formatting for rendered HTML pane 
 -Add option for light or dark theme
@@ -16,7 +21,7 @@ TODO
 -   full screen
 -   Show title
 
-- Add colour
+- Add more colour
 - Center title vertically 
 - Customise resizer bars, maybe use this to show title
 */
@@ -25,13 +30,13 @@ TODO
 //VARIABLES and CONSTANTS
 const date = new Date(); 
 
-const paneTitleHTML = "HTML";
-const paneTitleMarkup = "Markup";
-const paneTitleRenderedHTML = "Result";
+const sPANE_TITLE_HTML = "HTML";
+const sPANE_TITLE_MARKUP = "Markup";
+const sPANE_TITLE_RENDERED_HTML = "Result";
 
 const sSEPARATOR = "--------------------------------";
 
-const placeholder = `# Welcome to my React Markdown Previewer!
+const sPLACEHOLDER = `# Welcome to my React Markdown Previewer!
 
 ## This is a sub-heading...
 ### And here's some other cool stuff:
@@ -76,7 +81,7 @@ And here. | Okay. | I think we get it.
 ![React Logo w/ Text](https://techchronos.com/wp-content/uploads/SszarkLabs/stack-icon/cywBkaGwkMeDAuJbSt1k.png)
 `;
 
-const placeholder2 = `1. List item one.
+const sPLACEHOLDER2 = `1. List item one.
 +
 List item one continued with a second paragraph followed by an
 Indented block.
@@ -108,7 +113,7 @@ This paragraph belongs to item two of the outer list.
 //MARKED SETUP
  
 // Override renderer functions
-const renderer = {
+const oRENDERER = {
   link(href, title, text) {
     console.log(
       "rendering markdown for link, href: ",
@@ -141,17 +146,10 @@ const renderer = {
         </table>
       </div>`;
   }
- 
-  /*,
-  br() { 
-    console.log("rendering markdown for br");
-    return `
-<br/>`;
-  }*/
-
+   
 };
 
-marked.use({ renderer });
+marked.use({ renderer: oRENDERER });
 
 // ALLOWS LINE BREAKS WITH RETURN BUTTON
 marked.setOptions({
@@ -163,35 +161,13 @@ marked.setOptions({
 //////////////////////////////////////////////////////////////////////////////
 //FUNCTIONS
 
-let RenderMarkdown = (sMarkdown) => {
-  //console.log("RenderMarkdown RAW: ", sMarkdown);
+let RenderMarkdown = (sMarkdown) => { 
 
-  //sMarkdown = sMarkdown.replace(/\n/g, `<br>\n`);
-  //sMarkdown = sMarkdown.replace(/\r\n|\r|\n/g, '<br>');
+  let renderedHTML = marked(sMarkdown); 
 
-  //sMarkdown = sMarkdown.replace(/\r\n\r\n|\r\r|\n\n/g, '<br>');
-
-  //console.log("RenderMarkdown line breaks replaced: ", sMarkdown);
-
-  let renderedHTML = marked(sMarkdown);
-
-  //console.log("renderedHTML: ", renderedHTML);
-
-  let sanitizedHTML = DOMPurify.sanitize(renderedHTML);
-
-  //console.log("sanitizedHTML: ", sanitizedHTML);
-
-  //marked(sMarkdown, { renderer: renderer });
-  return sanitizedHTML;
-
-  /*
-  test
-  string htmlFragment = "<IMG SRC=`javascript:alert(\"RSnake says, 'XSS'\")`>";
-            string actual = sanitizer.Sanitize(htmlFragment);
-
-            // Assert
-            string expected = "<img>";
-  */
+  let sanitizedHTML = DOMPurify.sanitize(renderedHTML); 
+ 
+  return sanitizedHTML; 
 };
 
 //////////////////////////////////////////////////////////////////////////////
@@ -202,52 +178,32 @@ class Wrapper extends React.Component {
     console.log("Wrapper constructor");
     super(props);
     this.state = {
-      markdown: placeholder,
-      renderedHTML: RenderMarkdown(placeholder)
+      markdown: sPLACEHOLDER,
+      renderedHTML: RenderMarkdown(sPLACEHOLDER)
     };
 
     console.log("Wrapper Text change method binding");
     this.handleTextChange = this.handleTextChange.bind(this);
  
-  }
-
-  handleSizeButtonClick(event) {
-    //console.log(date.toLocaleString(), "TBC");
-  }
+  } 
 
   handleTextChange(event) {
     console.log("handleTextChange method: ", event.target.value);
     let sMarkdown = event.target.value;
-    let srenderedHTML = RenderMarkdown(sMarkdown);
-
-    //console.log(sSEPARATOR);
-    //console.log(date.toLocaleString(), "Markdown input (sanitised)");
-    //console.log( sMarkdown);
-
-    //console.log(sSEPARATOR);
-    //console.log(date.toLocaleString(), "Markdown rendered output");
-    //console.log( srenderedHTML);
-
-    //console.log(sSEPARATOR);
+    let sRenderedHTML = RenderMarkdown(sMarkdown); 
 
     this.setState({
       markdown: sMarkdown,
-      renderedHTML: srenderedHTML
+      renderedHTML: sRenderedHTML
     });
   }
 
-  componentDidCatch(error, errorInfo) {
-    // You can also log the error to an error reporting service
+  componentDidCatch(error, errorInfo) { 
     console.log("error:", error.toString(), "errorInfo: ", errorInfo);
   }
 
   render() {
-    console.log(date.toLocaleString(), "Wrapper Pre-Render");
-
-    /*const styleC = { 
-      background: '#F00',
-      color: '#F00' 
-    };*/
+    console.log(date.toLocaleString(), "Wrapper Pre-Render"); 
 
     return (
       <div id="wrapper" className="">
@@ -264,7 +220,7 @@ class Wrapper extends React.Component {
             split="vertical" 
             minSize={50} 
             //className="Resizerx"
-            resizerClassName="Resizer"
+            resizerClassName="Resizer"  //doesnt work on react-split-pane v2.+ for some reason
           >
             <Pane minSize="15%"> 
               <EditorContainer
@@ -305,7 +261,7 @@ const EditorContainer = (props) => {
   console.log(date.toLocaleString(), "EditorContainer Pre-Render");
   return (
     <div className="textarea-container">
-      <PaneTitle title={paneTitleMarkup} />
+      <PaneTitle title={sPANE_TITLE_MARKUP} />
       <textarea
         id="editor"
         onChange={props.handleTextChange}
@@ -318,27 +274,27 @@ const EditorContainer = (props) => {
 const HTMLPreviewContainer = (props) => {
   console.log(date.toLocaleString(), "HTMLPreviewContainer Pre-Render");
 
-  let text = props.renderedHTML;
+  let sText = props.renderedHTML;
 
-  if (typeof text === "string") {
+  if (typeof sText === "string") {
     //text = text.replace("<", "&lt;");
     //text = text.replace(">", "&gt;");
     //console.log("rendered HTML text as text: ", text.split(/\r?\n/));
   } else {
     console.log(
       "Type of rendered HTML text prop is not text, it is ",
-      typeof text
+      typeof sText
     );
   }
  
   //convert renderedHTML to plain text inside HTML tags
-  let s = text.split(/\r?\n/).map((e, i) => (
+  let s = sText.split(/\r?\n/).map((e, i) => (
             <p key={i}>{e}</p>
           ));
 
   return (
     <div className="textarea-container"> 
-      <PaneTitle title={paneTitleHTML} />
+      <PaneTitle title={sPANE_TITLE_HTML} />
       <div id="html-preview">
         {s}
       </div>
@@ -350,16 +306,14 @@ const PreviewContainer = (props) => {
   console.log(date.toLocaleString(), "PreviewContainer Pre-Render");
   return (
     <div  className="textarea-container"> 
-      <PaneTitle title={paneTitleRenderedHTML} />
+      <PaneTitle title={sPANE_TITLE_RENDERED_HTML} />
       <div id="preview" dangerouslySetInnerHTML={{ __html: props.renderedHTML }} />
     </div>
   );
 };
 
-console.log(date.toLocaleString(), "ReactDOM Pre-Render");
-//ReactDOM.render(<Wrapper />, document.getElementById("wrapper"));
+console.log(date.toLocaleString(), "ReactDOM Pre-Render"); 
 
-//ReactDOM.render(<SplitComponent1 />, document.getElementById("wrapper"));
 export default function App() {
   return <Wrapper />;
 }

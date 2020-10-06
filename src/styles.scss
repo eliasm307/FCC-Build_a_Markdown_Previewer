@@ -283,7 +283,7 @@ html {
 
       //Link tooltip
       a:before {
-        content: attr(href); /* here's the magic */
+        content: attr(href); /* show href of a tag in tooltip */
         position:absolute;
         
         /* vertically center */
@@ -293,13 +293,6 @@ html {
         /* move to center horizontally */
         left:100%;
         transform:translateX(-50%);
-
-        //margin-bottom:15px; /* and add a small left margin */
-        
-        //Hide text overflow and show ellipses
-        //white-space: nowrap;
-        //overflow: hidden;
-        //text-overflow: ellipsis;
 
         /* basic styles */
         width:200px;  
@@ -323,9 +316,7 @@ html {
     } 
     
   }
- 
-
-   
+  
 }
 
 
